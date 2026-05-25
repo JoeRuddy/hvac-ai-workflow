@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI HVAC Predictive Maintenance Workflow</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            color: #2c3e50;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        h1 {
+            color: #1e3c72;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        .flowchart {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .node {
+            width: 100%;
+            background: #fff;
+            border: 2px solid #bdc3c7;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 5px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-weight: 600;
+        }
+        .node:hover {
+            border-color: #3498db;
+            background: #eaf2f8;
+            transform: translateY(-2px);
+        }
+        .node.active {
+            border-color: #2ecc71;
+            background: #eafaf1;
+            box-shadow: 0 0 10px rgba(46, 204, 113, 0.3);
+        }
+        .arrow {
+            font-size: 20px;
+            color: #7f8c8d;
+            margin: 2px 0;
+        }
+        .details-panel {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            border: 1px solid #e2e8f0;
+            height: fit-content;
+        }
+        .panel-placeholder {
+            color: #7f8c8d;
+            text-align: center;
+            font-style: italic;
+        }
+        .simulator {
+            margin-top: 30px;
+            padding: 20px;
+            background: #edf2f7;
+            border-radius: 8px;
+            border-left: 5px solid #1e3c72;
+        }
+        .slider-group {
+            margin-bottom: 15px;
+        }
+        .slider-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .slider-group input {
+            width: 100%;
+        }
+        .alert-box {
+            padding: 15px;
+            border-radius: 6px;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 15px;
+            display: none;
+        }
+        .alert-normal {
+            background-color: #d4edda;
+            color: #155724;
+            display: block;
+        }
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            display: block;
+            animation: blink 1s infinite;
+        }
+        @keyframes blink {
+            50% { opacity: 0.6; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>AI HVAC Predictive Maintenance Interactive Blueprint</h1>
+    
+    <div class="main-layout">
+        <div class="flowchart">
+            <div class="node" onclick="showStep(1, 'HVAC Sensors', 'Collects continuous airflow, vibration, temperature, and pressure data directly from building infrastructure.', 'Hardware Sensors (Temp, Vibration, Airflow, Pressure)')">1. HVAC Sensors</div>
+            <div class="arrow">↓</div>
+            <div class="node" onclick="showStep(2, 'API / Data Pipeline', 'Ingests live telemetry data stream and safely moves it to a cloud or local system.', 'n8n, Zapier, Node-RED, or Python Scripts')">2. API / Data Pipeline</div>
+            <div class="arrow">↓</div>
+            <div class="node" onclick="showStep(3, 'AI Analysis Engine', 'Runs machine learning anomaly detection to catch structural or efficiency issues before breakdowns happen.', 'Python ML Models or Anomaly Detection APIs')">3. AI Analysis Engine</div>
+            <div class="arrow">↓</div>
+            <div class="node" onclick="showStep(4, 'Dashboard Visualization', 'Synthesizes engine data into clean graphs displaying overall health, trends, and critical flags.', 'Grafana, Power BI, or Custom Web App')">4. Dashboard</div>
+            <div class="arrow">↓</div>
+            <div class="node" onclick="showStep(5, 'Alert System', 'Automatically triggers and dispatches SMS, email, or team alerts the second an anomaly clears the threshold.', 'Twilio SMS, Email Automation, Slack, Teams')">5. Alert System</div>
+            <div class="arrow">↓</div>
+            <div class="node" onclick="showStep(6, 'Maintenance Action', 'Technicians deploy to site with clear instructions to proactively inspect, clean, or repair target parts.', 'On-site Facilities Engineers')">6. Maintenance Action</div>
+            <div class="arrow">↓</div>
+            <div class="node" onclick="showStep(7, 'Feedback Loop', 'New resolution details are fed back into the training loop to upgrade future prediction accuracies.', 'Data Optimization Retraining')">7. Feedback Loop</div>
+        </div>
+
+        <div class="details-panel" id="details-panel">
+            <div class="panel-placeholder" id="placeholder-text">Click any flowchart step on the left to explore its function and technology stack!</div>
+            <div id="panel-content" style="display:none;">
+                <h3 id="step-title" style="color:#1e3c72; margin-top:0;">Step Title</h3>
+                <p><strong>Purpose:</strong></p>
+                <p id="step-desc">Description</p>
+                <p><strong>Suggested Tech Stack:</strong></p>
+                <p id="step-tech" style="color:#2980b9; font-weight:bold;">Tech</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="simulator">
+        <h3 style="margin-top:0; color:#1e3c72;">Live Operational Simulator</h3>
+        <p style="font-size: 14px; color:#555;">Adjust the live HVAC environment values below to test how the pipeline handles systemic data shifts:</p>
+        
+        <div class="slider-group">
+            <label>Asset Continuous Run Time: <span id="days-val">15</span> Days</label>
+            <input type="range" id="days-slider" min="1" max="60" value="15" oninput="updateSimulation()">
+        </div>
+
+        <div class="slider-group">
+            <label>Vibration Deviation Level: <span id="vib-val">1.2</span>x Baseline</label>
+            <input type="range" id="vib-slider" min="10" max="50" value="12" oninput="updateSimulation()">
+        </div>
+
+        <div id="status-alert" class="alert-box alert-normal">
+            SYSTEM STATUS: Normal Operation. Anomaly Detection Engine reading clear.
+        </div>
+    </div>
+</div>
+
+<script>
+    function showStep(num, title, desc, tech) {
+        document.getElementById('placeholder-text').style.display = 'none';
+        document.getElementById('panel-content').style.display = 'block';
+        
+        document.getElementById('step-title').innerText = num + ". " + title;
+        document.getElementById('step-desc').innerText = desc;
+        document.getElementById('step-tech').innerText = tech;
+
+        const nodes = document.querySelectorAll('.node');
+        nodes.forEach((node, index) => {
+            if(index === (num - 1)) {
+                node.classList.add('active');
+            } else {
+                node.classList.remove('active');
+            }
+        });
+    }
+
+    function updateSimulation() {
+        const days = document.getElementById('days-slider').value;
+        const vib = (document.getElementById('vib-slider').value / 10).toFixed(1);
+        
+        document.getElementById('days-val').innerText = days;
+        document.getElementById('vib-val').innerText = vib;
+
+        const alertBox = document.getElementById('status-alert');
+
+        // Check for trigger criteria
+        if (days > 30 && vib >= 3.0) {
+            alertBox.className = "alert-box alert-danger";
+            alertBox.innerText = "CRITICAL WARNING: High vibration detected after " + days + " days of continuous runtime! AI Engine has dispatched emergency work orders via Twilio SMS.";
+        } else if (vib >= 2.5) {
+            alertBox.className = "alert-box alert-danger";
+            alertBox.innerText = "ELEVATED ALERT: Abnormal vibration pattern detected (" + vib + "x). Monitoring system has flagged Dashboard Step 4.";
+        } else {
+            alertBox.className = "alert-box alert-normal";
+            alertBox.innerText = "SYSTEM STATUS: Normal Operation. Telemetry streaming reliably into AI data pipeline.";
+        }
+    }
+</script>
+
+</body>
+</html>
